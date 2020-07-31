@@ -30,16 +30,27 @@
                     shots: 0,
                     score: 0
                 }
+
+                this.shotSound = new Audio('assets/Audio/Back+Board.wav')
+
+                this.scoreSound = new Audio('assets/Audio/Swish+2.wav')
             }
 
 
 
             shotHandler = () => {
                 let score = this.state.score
+                this.shotSound.play()
+                
 
 
                 if (Math.random() > 0.5) {
                     score += 1
+                    
+                    setTimeout(() => {
+                        this.scoreSound.play()
+                    }, 300)
+                    
                 }
 
 
@@ -55,6 +66,21 @@
 
 
             render() {
+                let shotPercentageDiv 
+                if(this.state.shots) {
+                const shotPercentage = Math.round((this.state.score / this.state.shots) * 100)
+
+                    shotPercentageDiv = (
+                        <div>
+                        
+                        <strong>Shooting Percentage: {shotPercentage} </strong>
+                        
+                        </div>
+
+                    )
+                }
+
+
                 return (
                     <div className="Team">
 
@@ -79,6 +105,14 @@
                             <h2>Score:</h2> {this.state.score}
 
                         </div>
+
+
+                        
+
+
+                        {shotPercentageDiv}
+
+
                         <button onClick={this.shotHandler}>Shoot</button>
 
 
@@ -89,18 +123,10 @@
 
         }
 
-        class Team2 extends React.Component {
-            render() {
-                return
-            }
-
-
-        }
-
-
-        function App(props) {
+        function Game(props) {
             return (
-                <div className="App">
+                <div className="Game">
+                    <h1>Hello and Welcome to {props.venue}</h1>
                     <div className="Statistics">
                         <Team name="Light" logo="assets\images\light.jpg" />
 
@@ -108,8 +134,28 @@
                             <h1>Versus</h1>
                         </div>
 
-                        <Team name="Dark" logo="assets\images\dark.jpg" />
+                        <Team name="Dark" logo="assets\images\darkness.jpg" />
                     </div>
+                </div>
+            )
+        }
+
+
+
+        function App(props) {
+            const light = {
+                name: 'Light' ,
+                logoSrc: '/assets/images/light.jpg'
+            }
+
+            const dark = {
+                name: 'Dark' ,
+                logoSrc: '/assets/images/darkness.jpg'
+            }
+            return (
+                <div className="App">
+                   <Game venue="Hero V Villains" />
+                   <Game venue="USA vs USJ" />
                 </div>
 
 
